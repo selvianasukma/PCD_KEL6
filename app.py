@@ -13,7 +13,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom Styling (Biru Cerah & Bersih)
+# Custom Styling (Tombol Kontras Tinggi & Bersih)
 st.markdown("""
     <style>
     /* 1. Header Atas Streamlit */
@@ -58,24 +58,25 @@ st.markdown("""
         gap: 12px;
     }
 
-    /* 5. Area Upload Citra */
+    /* 5. Area Upload Citra & Kamera */
     [data-testid="stFileUploader"] section {
-        padding: 30px 20px;
-        min-height: 180px;
-        border: 2px dashed #38bdf8 !important;
+        padding: 24px 20px;
+        min-height: 150px;
+        border: 2px dashed #0284c7 !important;
         border-radius: 12px;
         background-color: #f0f9ff !important;
         transition: all 0.2s ease;
     }
     [data-testid="stFileUploader"] section:hover {
-        border-color: #0284c7 !important;
+        border-color: #0369a1 !important;
         background-color: #e0f2fe !important;
     }
     
-    /* Tombol Upload */
+    /* Tombol Upload Berkas */
     [data-testid="stFileUploader"] section button {
         background-color: #0284c7 !important;
         color: #ffffff !important;
+        font-weight: 600 !important;
         border-radius: 6px !important;
         border: none !important;
     }
@@ -83,28 +84,25 @@ st.markdown("""
         background-color: #0369a1 !important;
         color: #ffffff !important;
     }
-    
-    [data-testid="stFileUploader"] span, 
-    [data-testid="stFileUploader"] small {
-        color: #0369a1 !important;
-    }
 
-    /* 6. Tombol Prediksi Biru Cerah */
+    /* 6. Tombol Prediksi Utama (Sangat Kontras, Tebal, dan Jelas) */
     div.stButton > button:first-child {
-        background-color: #0284c7 !important;
+        background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%) !important;
         color: #ffffff !important;
-        font-size: 1rem;
-        font-weight: 700;
-        border-radius: 8px;
-        border: none !important;
-        padding: 10px 20px;
-        box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);
-        transition: all 0.2s ease;
+        font-size: 1.05rem !important;
+        font-weight: 800 !important;
+        letter-spacing: 0.5px !important;
+        border-radius: 10px !important;
+        border: 1px solid #1e40af !important;
+        padding: 12px 24px !important;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
+        transition: all 0.2s ease !important;
     }
     div.stButton > button:first-child:hover {
-        background-color: #0369a1 !important;
+        background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%) !important;
         color: #ffffff !important;
-        box-shadow: 0 6px 14px rgba(2, 132, 199, 0.35);
+        box-shadow: 0 6px 20px rgba(30, 64, 175, 0.5) !important;
+        transform: translateY(-2px);
     }
 
     /* 7. Lencana Footer Sidebar */
@@ -199,21 +197,39 @@ if menu == "📤 Unggah & Prediksi":
     if model is None:
         st.error("Model tidak ditemukan atau gagal diunduh. Pastikan link Google Drive sudah diatur publik.")
     else:
-        st.subheader("Unggah Citra Sayuran")
-        uploaded_file = st.file_uploader(
-            "Pilih atau seret gambar sayuran (.jpg, .jpeg, .png)", 
-            type=["jpg", "jpeg", "png"]
+        # Pilihan Metode Masukan Citra (Unggah Berkas atau Kamera)
+        input_source = st.radio(
+            "Pilih Metode Masukan Gambar:",
+            options=["📁 Unggah Gambar dari Galeri / Berkas", "📷 Ambil Foto Langsung Lewat Kamera"],
+            horizontal=True
         )
 
-        if uploaded_file is not None:
+        image_data = None
+        source_name = "Kamera"
+
+        if input_source == "📁 Unggah Gambar dari Galeri / Berkas":
+            uploaded_file = st.file_uploader(
+                "Pilih atau seret gambar sayuran (.jpg, .jpeg, .png)", 
+                type=["jpg", "jpeg", "png"]
+            )
+            if uploaded_file is not None:
+                image_data = uploaded_file
+                source_name = uploaded_file.name
+        else:
+            camera_file = st.camera_input("Arahkan kamera ke sayuran lalu klik tombol ambil gambar")
+            if camera_file is not None:
+                image_data = camera_file
+                source_name = "Foto_Kamera_Langsung.png"
+
+        if image_data is not None:
             st.write("")
             col1, col2 = st.columns([1, 1], gap="large")
             
-            # Kolom Kiri: Pratinjau Citra
+            # Kolom Kiri: Pratinjau Citra Masukan
             with col1:
-                img_display = Image.open(uploaded_file).convert("RGB")
-                st.image(img_display, caption="Pratinjau Citra Input", use_container_width=True)
-                run_btn = st.button("🔍 Jalankan Prediksi", use_container_width=True)
+                img_display = Image.open(image_data).convert("RGB")
+                st.image(img_display, caption="Pratinjau Citra Sayuran", use_container_width=True)
+                run_btn = st.button("🔍 JALANKAN PREDIKSI", use_container_width=True)
 
             # Preprocessing Citra (150x150, normalisasi [0, 1])
             img_resized = img_display.resize((150, 150))
@@ -298,7 +314,7 @@ if menu == "📤 Unggah & Prediksi":
                             </div>
                         """, unsafe_allow_html=True)
 
-                        # Grafik Probabilitas (Hanya Bahasa Indonesia Saja)
+                        # Grafik Probabilitas
                         st.write("")
                         st.subheader("Distribusi Skor Keyakinan")
                         df_chart = pd.DataFrame({
@@ -308,11 +324,10 @@ if menu == "📤 Unggah & Prediksi":
                         st.bar_chart(df_chart)
 
                         # Detail Teknis Gambar
-                        with st.expander(f"🔍 Detail Gambar Input ({uploaded_file.name})"):
-                            st.write(f"- **Nama File:** `{uploaded_file.name}`")
+                        with st.expander(f"🔍 Detail Citra ({source_name})"):
+                            st.write(f"- **Sumber Citra:** `{source_name}`")
                             st.write(f"- **Dimensi Citra Asli:** `{img_display.size[0]} × {img_display.size[1]} piksel`")
                             st.write(f"- **Resolusi Masukan Model:** `150 × 150 piksel (RGB)`")
-                            st.write(f"- **Format Berkas:** `{uploaded_file.type}`")
 
 # --- HALAMAN 2: TENTANG SISTEM ---
 elif menu == "ℹ️ Tentang Sistem":
