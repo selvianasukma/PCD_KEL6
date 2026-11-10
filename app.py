@@ -13,7 +13,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom Styling (Paksa Semua Bagian Atas & Tombol Menjadi Putih Bersih)
+# Custom Styling (Putih Bersih & Modern)
 st.markdown("""
     <style>
     /* 1. Header Atas Streamlit Dipaksa Putih Bersih */
@@ -72,7 +72,7 @@ st.markdown("""
         background-color: #f1f5f9 !important;
     }
     
-    /* Tombol 'Browse files' diubah dari hitam menjadi abu-abu kalem */
+    /* Tombol Browse files */
     [data-testid="stFileUploader"] section button {
         background-color: #475569 !important;
         color: #ffffff !important;
@@ -118,24 +118,23 @@ st.markdown("""
         box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
     
-    /* Memastikan Seluruh Teks Terbaca Jelas */
+    /* Memastikan Teks Terbaca Jelas */
     h1, h2, h3, h4, p, label {
         color: #1e293b !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Pemuatan & Pengunduhan Model Otomatis
+# Pemuatan & Pengunduhan Model Otomatis dari Google Drive
 @st.cache_resource
 def load_classification_model():
     model_name = "model_sayuran_custom_cnn.keras"
     
-    # Unduh otomatis dari Google Drive jika model belum ada di cloud
+    # Jika file model belum ada di cloud Streamlit, unduh dari Google Drive
     if not os.path.exists(model_name):
-        # Masukkan File ID Google Drive Anda di bawah ini
-        file_id = "MASUKKAN_FILE_ID_GOOGLE_DRIVE_DISINI"
+        file_id = "1sEWOkVbdtFxc6-0J7oU2ITBE83HtIVVQ"
         url = f"https://drive.google.com/uc?id={file_id}"
-        with st.spinner("Mengunduh model bobot CNN dari Google Drive... Harap tunggu sebentar."):
+        with st.spinner("Mengunduh file model CNN dari Google Drive... Harap tunggu sebentar."):
             gdown.download(url, model_name, quiet=False)
             
     if not os.path.exists(model_name):
@@ -146,7 +145,7 @@ def load_classification_model():
 model = load_classification_model()
 class_names = ['Carrot', 'Cucumber', 'Tomato']
 
-# Database Informasi Sayuran
+# Informasi Sayuran
 vegetable_details = {
     'Carrot': {
         'nama': 'Wortel (Daucus carota)',
@@ -193,7 +192,7 @@ if menu == "📤 Upload & Predict":
     st.markdown("---")
 
     if model is None:
-        st.error("Model 'model_sayuran_custom_cnn.keras' belum berhasil dimuat. Pastikan File ID Google Drive valid dan tautan disetel publik (Anyone with the link).")
+        st.error("Model gagal diunduh atau tidak ditemukan. Pastikan tautan Google Drive publik.")
     else:
         st.subheader("Unggah Citra Sayuran")
         uploaded_file = st.file_uploader(
@@ -205,7 +204,7 @@ if menu == "📤 Upload & Predict":
             st.write("")
             col1, col2 = st.columns([1, 1], gap="large")
             
-            # Kolom Kiri: Tampilan Citra Input
+            # Kolom Kiri: Pratinjau Citra
             with col1:
                 img_display = Image.open(uploaded_file).convert("RGB")
                 st.image(img_display, caption="Pratinjau Citra Input", use_container_width=True)
@@ -216,7 +215,7 @@ if menu == "📤 Upload & Predict":
             img_array = np.array(img_resized) / 255.0
             img_array = np.expand_dims(img_array, axis=0)
 
-            # Kolom Kanan: Hasil Analisis
+            # Kolom Kanan: Hasil Prediksi
             with col2:
                 if run_btn:
                     with st.spinner("Menganalisis karakteristik piksel citra..."):
