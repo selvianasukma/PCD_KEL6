@@ -64,39 +64,42 @@ st.markdown("""
         font-weight: 600;
     }
 
-    /* 6. Area Upload Citra (Latar Krem Lembut agar Tombol Biru Menonjol) */
+    /* 6. Area Kotak Upload (Garis Biru Muda Langit & Latar Bersih) */
     [data-testid="stFileUploader"] section {
         padding: 24px 20px;
         min-height: 150px;
-        border: 2px dashed #0284c7 !important;
+        border: 2px dashed #7dd3fc !important;
         border-radius: 12px;
-        background-color: #fffdf5 !important; /* Krem lembut hangat */
+        background-color: #f8fafc !important;
         transition: all 0.2s ease;
     }
     [data-testid="stFileUploader"] section:hover {
-        border-color: #0369a1 !important;
-        background-color: #fefce8 !important; /* Sentuhan kuning pastel saat disorot */
+        border-color: #38bdf8 !important;
+        background-color: #f0f9ff !important;
     }
     
-    /* Tombol Upload di Dalam Kotak (Biru Cerah & Jelas) */
+    /* Tombol Upload (Biru Muda Langit Cerah) */
     [data-testid="stFileUploader"] section button {
-        background-color: #0284c7 !important;
-        color: #ffffff !important;
-        font-weight: 700 !important;
+        background-color: #38bdf8 !important;
         border-radius: 8px !important;
         border: none !important;
-        box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3) !important;
+        box-shadow: 0 2px 8px rgba(56, 189, 248, 0.35) !important;
     }
     [data-testid="stFileUploader"] section button:hover {
-        background-color: #0369a1 !important;
+        background-color: #0ea5e9 !important;
+    }
+    
+    /* Memaksa Teks & Ikon di Dalam Tombol Menjadi Putih Terang */
+    [data-testid="stFileUploader"] section button * {
         color: #ffffff !important;
+        font-weight: 700 !important;
     }
     
     /* Teks Keterangan Upload (Diperjelas agar tidak pudar) */
     [data-testid="stFileUploader"] span, 
     [data-testid="stFileUploader"] small {
-        color: #334155 !important;
-        font-weight: 600 !important;
+        color: #475569 !important;
+        font-weight: 500 !important;
     }
 
     /* 7. Tombol Prediksi Utama (Biru Royal Tebal & Menonjol) */
