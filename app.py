@@ -13,7 +13,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom Styling (Semua Teks Hitam Pekat, Elemen Kontras, & Radio Hitam)
+# Custom Styling (Charcoal Slate Lembut & Bersih)
 st.markdown("""
     <style>
     /* 1. Header Atas Streamlit */
@@ -24,13 +24,13 @@ st.markdown("""
     /* 2. Latar Belakang Utama Aplikasi */
     .stApp {
         background-color: #ffffff !important;
-        color: #0f172a !important;
+        color: #334155 !important;
     }
     
     /* 3. Bar Sisi (Sidebar) */
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%) !important;
-        color: #0f172a !important;
+        color: #334155 !important;
         border-right: 1px solid #cbd5e1;
     }
     
@@ -39,7 +39,7 @@ st.markdown("""
     [data-testid="stSidebar"] label, 
     [data-testid="stSidebar"] div, 
     [data-testid="stSidebar"] p {
-        color: #0f172a !important;
+        color: #334155 !important;
         font-weight: 600;
     }
     
@@ -47,11 +47,11 @@ st.markdown("""
         border-color: #cbd5e1 !important;
     }
 
-    /* 4. Judul Utama (Hitam Tebal) */
+    /* 4. Judul Utama (Charcoal Elegan) */
     .clean-title {
         font-size: 2.2rem;
         font-weight: 800;
-        color: #0f172a !important;
+        color: #1e293b !important;
         margin-top: -15px;
         margin-bottom: 20px;
         display: flex;
@@ -59,9 +59,9 @@ st.markdown("""
         gap: 12px;
     }
 
-    /* 5. Semua Label Teks & Paragraf Menjadi Hitam */
+    /* 5. Semua Label Teks & Paragraf */
     h1, h2, h3, h4, p, label, .stMarkdown, .stRadio label {
-        color: #0f172a !important;
+        color: #334155 !important;
         font-weight: 600;
     }
 
@@ -75,32 +75,32 @@ st.markdown("""
         transition: all 0.2s ease;
     }
     [data-testid="stFileUploader"] section:hover {
-        border-color: #475569 !important;
+        border-color: #64748b !important;
         background-color: #f1f5f9 !important;
     }
     
-    /* Tombol Upload (Biru Cerah dengan Teks Hitam) */
+    /* Tombol Upload (Biru Muda Langit Cerah) */
     [data-testid="stFileUploader"] section button {
         background-color: #38bdf8 !important;
         border-radius: 8px !important;
-        border: 1px solid #0284c7 !important;
+        border: 1px solid #0ea5e9 !important;
         box-shadow: 0 2px 8px rgba(56, 189, 248, 0.35) !important;
     }
     [data-testid="stFileUploader"] section button:hover {
         background-color: #0ea5e9 !important;
     }
     
-    /* Teks & Ikon Tombol Upload Menjadi Hitam */
+    /* Teks & Ikon Tombol Upload */
     [data-testid="stFileUploader"] section button * {
-        color: #0f172a !important;
-        font-weight: 800 !important;
+        color: #1e293b !important;
+        font-weight: 700 !important;
     }
     
-    /* Keterangan Ukuran File Menjadi Hitam */
+    /* Keterangan Ukuran File */
     [data-testid="stFileUploader"] span, 
     [data-testid="stFileUploader"] small {
-        color: #0f172a !important;
-        font-weight: 600 !important;
+        color: #64748b !important;
+        font-weight: 500 !important;
     }
 
     /* 7. Tombol Prediksi Utama */
@@ -127,32 +127,32 @@ st.markdown("""
     .sidebar-footer-badge {
         display: inline-block;
         background-color: #ffffff;
-        color: #0f172a !important;
+        color: #334155 !important;
         padding: 6px 18px;
         border-radius: 20px;
         font-size: 0.9rem;
-        font-weight: 800;
+        font-weight: 700;
         border: 1px solid #cbd5e1;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
 
-    /* 9. Lingkaran Radio Button (Bulat-Bulat) Menjadi Hitam Tegas */
+    /* 9. Lingkaran Radio Button (Charcoal Lembut, Tidak Hitam Pekat) */
     div[data-testid="stRadio"] div[role="radiogroup"] label div:first-child {
-        border-color: #0f172a !important;
+        border-color: #475569 !important;
         border-width: 2px !important;
     }
 
     div[data-testid="stRadio"] div[role="radiogroup"] label[data-checked="true"] div:first-child {
-        border-color: #0f172a !important;
+        border-color: #334155 !important;
     }
 
     div[data-testid="stRadio"] div[role="radiogroup"] label div:first-child > div,
     div[data-testid="stRadio"] div[role="radiogroup"] label div:first-child::after {
-        background-color: #0f172a !important;
+        background-color: #334155 !important;
     }
 
     div[data-testid="stRadio"] input[type="radio"] {
-        accent-color: #0f172a !important;
+        accent-color: #334155 !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -281,7 +281,7 @@ if menu == "📤 Unggah & Prediksi":
 
                         st.subheader("📊 Hasil Klasifikasi")
                         
-                        # Kartu Hasil - Teks Hitam
+                        # Kartu Hasil
                         st.markdown(f"""
                             <div style="
                                 background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
@@ -291,8 +291,8 @@ if menu == "📤 Unggah & Prediksi":
                                 margin-bottom: 12px;
                                 box-shadow: 0 2px 6px rgba(14, 165, 233, 0.1);
                             ">
-                                <span style="font-size: 0.85rem; font-weight: 800; color: #0f172a; text-transform: uppercase; letter-spacing: 0.8px;">Jenis Sayuran Terdeteksi</span>
-                                <div style="font-size: 1.6rem; font-weight: 800; color: #0f172a; margin-top: 4px;">
+                                <span style="font-size: 0.85rem; font-weight: 700; color: #0369a1; text-transform: uppercase; letter-spacing: 0.8px;">Jenis Sayuran Terdeteksi</span>
+                                <div style="font-size: 1.6rem; font-weight: 800; color: #1e293b; margin-top: 4px;">
                                     {detail['nama']}
                                 </div>
                             </div>
@@ -310,11 +310,11 @@ if menu == "📤 Unggah & Prediksi":
                                 justify-content: space-between;
                                 align-items: center;
                             ">
-                                <span style="font-weight: 700; color: #0f172a; font-size: 0.95rem;">Tingkat Keyakinan:</span>
+                                <span style="font-weight: 600; color: #334155; font-size: 0.95rem;">Tingkat Keyakinan:</span>
                                 <span style="
-                                    background-color: #0f172a;
+                                    background-color: #334155;
                                     color: #ffffff !important;
-                                    font-weight: 800;
+                                    font-weight: 700;
                                     font-size: 1.05rem;
                                     padding: 4px 14px;
                                     border-radius: 20px;
@@ -327,23 +327,23 @@ if menu == "📤 Unggah & Prediksi":
                         with detail_col1:
                             st.markdown(f"""
                                 <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 14px; min-height: 130px;">
-                                    <strong style="color: #0f172a;">🥗 Kandungan Nutrisi:</strong><br>
-                                    <span style="font-size: 0.9rem; color: #1e293b;">{detail['nutrisi']}</span>
+                                    <strong style="color: #1e293b;">🥗 Kandungan Nutrisi:</strong><br>
+                                    <span style="font-size: 0.9rem; color: #475569;">{detail['nutrisi']}</span>
                                 </div>
                             """, unsafe_allow_html=True)
                         with detail_col2:
                             st.markdown(f"""
                                 <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 14px; min-height: 130px;">
-                                    <strong style="color: #0f172a;">💡 Manfaat Kesehatan:</strong><br>
-                                    <span style="font-size: 0.9rem; color: #1e293b;">{detail['manfaat']}</span>
+                                    <strong style="color: #1e293b;">💡 Manfaat Kesehatan:</strong><br>
+                                    <span style="font-size: 0.9rem; color: #475569;">{detail['manfaat']}</span>
                                 </div>
                             """, unsafe_allow_html=True)
 
                         st.write("")
                         st.markdown(f"""
-                            <div style="background: #f1f5f9; border-left: 4px solid #0f172a; padding: 12px 16px; border-radius: 6px;">
-                                <strong style="color: #0f172a;">❄️ Tips Penyimpanan:</strong><br>
-                                <span style="font-size: 0.9rem; color: #1e293b;">{detail['penyimpanan']}</span>
+                            <div style="background: #f1f5f9; border-left: 4px solid #475569; padding: 12px 16px; border-radius: 6px;">
+                                <strong style="color: #1e293b;">❄️ Tips Penyimpanan:</strong><br>
+                                <span style="font-size: 0.9rem; color: #475569;">{detail['penyimpanan']}</span>
                             </div>
                         """, unsafe_allow_html=True)
 
