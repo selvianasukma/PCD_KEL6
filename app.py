@@ -13,7 +13,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom Styling (Charcoal Slate Lembut & Bersih)
+# Custom Styling (Selaras dengan Tombol Upload Biru Muda Cerah)
 st.markdown("""
     <style>
     /* 1. Header Atas Streamlit */
@@ -47,7 +47,7 @@ st.markdown("""
         border-color: #cbd5e1 !important;
     }
 
-    /* 4. Judul Utama (Charcoal Elegan) */
+    /* 4. Judul Utama */
     .clean-title {
         font-size: 2.2rem;
         font-weight: 800;
@@ -69,14 +69,14 @@ st.markdown("""
     [data-testid="stFileUploader"] section {
         padding: 24px 20px;
         min-height: 150px;
-        border: 2px dashed #94a3b8 !important;
+        border: 2px dashed #7dd3fc !important;
         border-radius: 12px;
         background-color: #f8fafc !important;
         transition: all 0.2s ease;
     }
     [data-testid="stFileUploader"] section:hover {
-        border-color: #64748b !important;
-        background-color: #f1f5f9 !important;
+        border-color: #38bdf8 !important;
+        background-color: #f0f9ff !important;
     }
     
     /* Tombol Upload (Biru Muda Langit Cerah) */
@@ -103,24 +103,31 @@ st.markdown("""
         font-weight: 500 !important;
     }
 
-    /* 7. Tombol Prediksi Utama */
+    /* 7. Tombol Prediksi Utama (Disamakan dengan Tombol Upload: Biru Muda Langit Cerah) */
     div.stButton > button:first-child {
-        background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%) !important;
-        color: #ffffff !important;
-        font-size: 1.05rem !important;
+        background-color: #38bdf8 !important;
+        color: #1e293b !important;
+        font-size: 1rem !important;
         font-weight: 800 !important;
         letter-spacing: 0.5px !important;
         border-radius: 10px !important;
-        border: 1px solid #1e40af !important;
+        border: 1px solid #0ea5e9 !important;
         padding: 12px 24px !important;
-        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
+        box-shadow: 0 4px 12px rgba(56, 189, 248, 0.35) !important;
         transition: all 0.2s ease !important;
     }
     div.stButton > button:first-child:hover {
-        background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%) !important;
+        background-color: #0ea5e9 !important;
         color: #ffffff !important;
-        box-shadow: 0 6px 20px rgba(30, 64, 175, 0.5) !important;
+        box-shadow: 0 6px 16px rgba(14, 165, 233, 0.45) !important;
         transform: translateY(-2px);
+    }
+    div.stButton > button:first-child * {
+        color: #1e293b !important;
+        font-weight: 800 !important;
+    }
+    div.stButton > button:first-child:hover * {
+        color: #ffffff !important;
     }
 
     /* 8. Lencana Footer Sidebar */
@@ -136,7 +143,7 @@ st.markdown("""
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     }
 
-    /* 9. Lingkaran Radio Button (Charcoal Lembut, Tidak Hitam Pekat) */
+    /* 9. Lingkaran Radio Button */
     div[data-testid="stRadio"] div[role="radiogroup"] label div:first-child {
         border-color: #475569 !important;
         border-width: 2px !important;
@@ -298,7 +305,7 @@ if menu == "📤 Unggah & Prediksi":
                             </div>
                         """, unsafe_allow_html=True)
 
-                        # Kartu Tingkat Keyakinan
+                        # Kartu Tingkat Keyakinan (Badge Biru Muda Senada dengan Upload)
                         st.markdown(f"""
                             <div style="
                                 background: #f8fafc;
@@ -312,12 +319,14 @@ if menu == "📤 Unggah & Prediksi":
                             ">
                                 <span style="font-weight: 600; color: #334155; font-size: 0.95rem;">Tingkat Keyakinan:</span>
                                 <span style="
-                                    background-color: #334155;
-                                    color: #ffffff !important;
-                                    font-weight: 700;
+                                    background-color: #38bdf8;
+                                    color: #1e293b !important;
+                                    font-weight: 800;
                                     font-size: 1.05rem;
-                                    padding: 4px 14px;
+                                    padding: 4px 16px;
                                     border-radius: 20px;
+                                    border: 1px solid #0ea5e9;
+                                    box-shadow: 0 2px 6px rgba(56, 189, 248, 0.25);
                                 ">{confidence:.2f}%</span>
                             </div>
                         """, unsafe_allow_html=True)
@@ -341,7 +350,7 @@ if menu == "📤 Unggah & Prediksi":
 
                         st.write("")
                         st.markdown(f"""
-                            <div style="background: #f1f5f9; border-left: 4px solid #475569; padding: 12px 16px; border-radius: 6px;">
+                            <div style="background: #f1f5f9; border-left: 4px solid #38bdf8; padding: 12px 16px; border-radius: 6px;">
                                 <strong style="color: #1e293b;">❄️ Tips Penyimpanan:</strong><br>
                                 <span style="font-size: 0.9rem; color: #475569;">{detail['penyimpanan']}</span>
                             </div>
