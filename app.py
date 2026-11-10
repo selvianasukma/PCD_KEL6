@@ -13,7 +13,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom Styling (Semua Teks Hitam Pekat & Elemen Kontras)
+# Custom Styling (Semua Teks Hitam Pekat, Elemen Kontras, & Radio Hitam)
 st.markdown("""
     <style>
     /* 1. Header Atas Streamlit */
@@ -134,6 +134,25 @@ st.markdown("""
         font-weight: 800;
         border: 1px solid #cbd5e1;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    /* 9. Lingkaran Radio Button (Bulat-Bulat) Menjadi Hitam Tegas */
+    div[data-testid="stRadio"] div[role="radiogroup"] label div:first-child {
+        border-color: #0f172a !important;
+        border-width: 2px !important;
+    }
+
+    div[data-testid="stRadio"] div[role="radiogroup"] label[data-checked="true"] div:first-child {
+        border-color: #0f172a !important;
+    }
+
+    div[data-testid="stRadio"] div[role="radiogroup"] label div:first-child > div,
+    div[data-testid="stRadio"] div[role="radiogroup"] label div:first-child::after {
+        background-color: #0f172a !important;
+    }
+
+    div[data-testid="stRadio"] input[type="radio"] {
+        accent-color: #0f172a !important;
     }
     </style>
 """, unsafe_allow_html=True)
