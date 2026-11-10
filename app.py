@@ -4,6 +4,7 @@ import numpy as np
 from PIL import Image
 import pandas as pd
 import os
+import gdown
 
 # Konfigurasi Halaman Web
 st.set_page_config(
@@ -124,12 +125,22 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Pemuatan Model
+# Pemuatan & Pengunduhan Model Otomatis
 @st.cache_resource
 def load_classification_model():
     model_name = "model_sayuran_custom_cnn.keras"
+    
+    # Unduh otomatis dari Google Drive jika model belum ada di cloud
+    if not os.path.exists(model_name):
+        # Masukkan File ID Google Drive Anda di bawah ini
+        file_id = "MASUKKAN_FILE_ID_GOOGLE_DRIVE_DISINI"
+        url = f"https://drive.google.com/uc?id={file_id}"
+        with st.spinner("Mengunduh model bobot CNN dari Google Drive... Harap tunggu sebentar."):
+            gdown.download(url, model_name, quiet=False)
+            
     if not os.path.exists(model_name):
         return None
+        
     return tf.keras.models.load_model(model_name)
 
 model = load_classification_model()
@@ -182,7 +193,7 @@ if menu == "📤 Upload & Predict":
     st.markdown("---")
 
     if model is None:
-        st.error("Model 'model_sayuran_custom_cnn.keras' tidak ditemukan di folder!")
+        st.error("Model 'model_sayuran_custom_cnn.keras' belum berhasil dimuat. Pastikan File ID Google Drive valid dan tautan disetel publik (Anyone with the link).")
     else:
         st.subheader("Unggah Citra Sayuran")
         uploaded_file = st.file_uploader(
