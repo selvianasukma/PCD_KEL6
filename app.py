@@ -103,7 +103,7 @@ st.markdown("""
         font-weight: 500 !important;
     }
 
-    /* 7. Tombol Prediksi Utama (Disamakan dengan Tombol Upload: Biru Muda Langit Cerah) */
+    /* 7. Tombol Prediksi Utama (Biru Muda Langit Cerah) */
     div.stButton > button:first-child {
         background-color: #38bdf8 !important;
         color: #1e293b !important;
@@ -287,76 +287,80 @@ if menu == "📤 Unggah & Prediksi":
                         detail = vegetable_details[label]
 
                         st.subheader("📊 Hasil Klasifikasi")
-                        
-                        # Kartu Hasil
-                        st.markdown(f"""
-                            <div style="
-                                background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-                                border: 1px solid #7dd3fc;
-                                border-radius: 12px;
-                                padding: 18px 22px;
-                                margin-bottom: 12px;
-                                box-shadow: 0 2px 6px rgba(14, 165, 233, 0.1);
-                            ">
-                                <span style="font-size: 0.85rem; font-weight: 700; color: #0369a1; text-transform: uppercase; letter-spacing: 0.8px;">Jenis Sayuran Terdeteksi</span>
-                                <div style="font-size: 1.6rem; font-weight: 800; color: #1e293b; margin-top: 4px;">
-                                    {detail['nama']}
-                                </div>
-                            </div>
-                        """, unsafe_allow_html=True)
 
-                        # Kartu Tingkat Keyakinan (Badge Biru Muda Senada dengan Upload)
-                        st.markdown(f"""
-                            <div style="
-                                background: #f8fafc;
-                                border: 1px solid #cbd5e1;
-                                border-radius: 10px;
-                                padding: 12px 18px;
-                                margin-bottom: 16px;
-                                display: flex;
-                                justify-content: space-between;
-                                align-items: center;
-                            ">
-                                <span style="font-weight: 600; color: #334155; font-size: 0.95rem;">Tingkat Keyakinan:</span>
-                                <span style="
-                                    background-color: #38bdf8;
-                                    color: #1e293b !important;
-                                    font-weight: 800;
-                                    font-size: 1.05rem;
-                                    padding: 4px 16px;
-                                    border-radius: 20px;
-                                    border: 1px solid #0ea5e9;
-                                    box-shadow: 0 2px 6px rgba(56, 189, 248, 0.25);
-                                ">{confidence:.2f}%</span>
-                            </div>
-                        """, unsafe_allow_html=True)
-
-                        # Kartu Informasi Gizi & Manfaat
-                        detail_col1, detail_col2 = st.columns(2)
-                        with detail_col1:
+                        # LOGIKA THRESHOLD KEYAKINAN (Batas Minimal 60%)
+                        if confidence < 60.0:
+                            st.warning(f"⚠️ **Tingkat Keyakinan Rendah ({confidence:.2f}%)**\n\nCitra tidak dapat dikenali secara pasti sebagai Wortel, Mentimun, atau Tomat. Pastikan sayuran berada di tengah, tidak terpotong, dan pencahayaan cukup jelas.")
+                        else:
+                            # Kartu Hasil Terverifikasi
                             st.markdown(f"""
-                                <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 14px; min-height: 130px;">
-                                    <strong style="color: #1e293b;">🥗 Kandungan Nutrisi:</strong><br>
-                                    <span style="font-size: 0.9rem; color: #475569;">{detail['nutrisi']}</span>
-                                </div>
-                            """, unsafe_allow_html=True)
-                        with detail_col2:
-                            st.markdown(f"""
-                                <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 14px; min-height: 130px;">
-                                    <strong style="color: #1e293b;">💡 Manfaat Kesehatan:</strong><br>
-                                    <span style="font-size: 0.9rem; color: #475569;">{detail['manfaat']}</span>
+                                <div style="
+                                    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+                                    border: 1px solid #7dd3fc;
+                                    border-radius: 12px;
+                                    padding: 18px 22px;
+                                    margin-bottom: 12px;
+                                    box-shadow: 0 2px 6px rgba(14, 165, 233, 0.1);
+                                ">
+                                    <span style="font-size: 0.85rem; font-weight: 700; color: #0369a1; text-transform: uppercase; letter-spacing: 0.8px;">Jenis Sayuran Terdeteksi</span>
+                                    <div style="font-size: 1.6rem; font-weight: 800; color: #1e293b; margin-top: 4px;">
+                                        {detail['nama']}
+                                    </div>
                                 </div>
                             """, unsafe_allow_html=True)
 
-                        st.write("")
-                        st.markdown(f"""
-                            <div style="background: #f1f5f9; border-left: 4px solid #38bdf8; padding: 12px 16px; border-radius: 6px;">
-                                <strong style="color: #1e293b;">❄️ Tips Penyimpanan:</strong><br>
-                                <span style="font-size: 0.9rem; color: #475569;">{detail['penyimpanan']}</span>
-                            </div>
-                        """, unsafe_allow_html=True)
+                            # Kartu Tingkat Keyakinan
+                            st.markdown(f"""
+                                <div style="
+                                    background: #f8fafc;
+                                    border: 1px solid #cbd5e1;
+                                    border-radius: 10px;
+                                    padding: 12px 18px;
+                                    margin-bottom: 16px;
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                ">
+                                    <span style="font-weight: 600; color: #334155; font-size: 0.95rem;">Tingkat Keyakinan:</span>
+                                    <span style="
+                                        background-color: #38bdf8;
+                                        color: #1e293b !important;
+                                        font-weight: 800;
+                                        font-size: 1.05rem;
+                                        padding: 4px 16px;
+                                        border-radius: 20px;
+                                        border: 1px solid #0ea5e9;
+                                        box-shadow: 0 2px 6px rgba(56, 189, 248, 0.25);
+                                    ">{confidence:.2f}%</span>
+                                </div>
+                            """, unsafe_allow_html=True)
 
-                        # Grafik Probabilitas
+                            # Kartu Informasi Gizi & Manfaat
+                            detail_col1, detail_col2 = st.columns(2)
+                            with detail_col1:
+                                st.markdown(f"""
+                                    <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 14px; min-height: 130px;">
+                                        <strong style="color: #1e293b;">🥗 Kandungan Nutrisi:</strong><br>
+                                        <span style="font-size: 0.9rem; color: #475569;">{detail['nutrisi']}</span>
+                                    </div>
+                                """, unsafe_allow_html=True)
+                            with detail_col2:
+                                st.markdown(f"""
+                                    <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 14px; min-height: 130px;">
+                                        <strong style="color: #1e293b;">💡 Manfaat Kesehatan:</strong><br>
+                                        <span style="font-size: 0.9rem; color: #475569;">{detail['manfaat']}</span>
+                                    </div>
+                                """, unsafe_allow_html=True)
+
+                            st.write("")
+                            st.markdown(f"""
+                                <div style="background: #f1f5f9; border-left: 4px solid #38bdf8; padding: 12px 16px; border-radius: 6px;">
+                                    <strong style="color: #1e293b;">❄️ Tips Penyimpanan:</strong><br>
+                                    <span style="font-size: 0.9rem; color: #475569;">{detail['penyimpanan']}</span>
+                                </div>
+                            """, unsafe_allow_html=True)
+
+                        # Grafik Probabilitas (Tetap ditampilkan agar distribusi skor terlihat jelas)
                         st.write("")
                         st.subheader("Distribusi Skor Keyakinan")
                         df_chart = pd.DataFrame({
