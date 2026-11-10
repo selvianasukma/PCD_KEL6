@@ -89,10 +89,10 @@ st.markdown("""
         background-color: #0ea5e9 !important;
     }
     
-    /* Memaksa Teks & Ikon di Dalam Tombol Menjadi Putih Terang */
+    /* Memaksa Teks & Ikon di Dalam Tombol Menjadi Biru Tua Kontras */
     [data-testid="stFileUploader"] section button * {
-        color: #ffffff !important;
-        font-weight: 700 !important;
+        color: #0369a1 !important;
+        font-weight: 800 !important;
     }
     
     /* Teks Keterangan Upload (Diperjelas agar tidak pudar) */
