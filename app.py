@@ -14,21 +14,20 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom Styling (Charcoal Slate, Biru Muda Cerah & Layout Ramping)
+# Custom Styling (Charcoal Slate, Biru Muda Cerah & Penataan Sejajar)
 st.markdown("""
     <style>
-    /* 1. Kurangi padding bawaan halaman agar posisi naik ke atas */
+    /* 1. Pengaturan Container Halaman */
     .block-container {
-        padding-top: 1.5rem !important;
+        padding-top: 2rem !important;
         padding-bottom: 1rem !important;
-        padding-left: 2rem !important;
-        padding-right: 2rem !important;
+        padding-left: 2.5rem !important;
+        padding-right: 2.5rem !important;
     }
 
     /* 2. Header Atas Streamlit */
     header[data-testid="stHeader"] {
         background-color: #ffffff !important;
-        height: 2.5rem !important;
     }
     
     /* 3. Latar Belakang Utama Aplikasi */
@@ -53,35 +52,36 @@ st.markdown("""
     }
     [data-testid="stSidebar"] hr {
         border-color: #cbd5e1 !important;
-        margin: 8px 0 !important;
+        margin: 10px 0 !important;
     }
 
-    /* 5. Judul Utama Ringkas */
+    /* 5. Judul Utama (Tetap Ada dan Jelas) */
     .clean-title {
-        font-size: 1.7rem;
+        font-size: 1.85rem;
         font-weight: 800;
         color: #1e293b !important;
-        margin-top: -15px;
-        margin-bottom: 6px;
+        margin-top: -10px;
+        margin-bottom: 14px;
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
     }
 
-    /* 6. Semua Label Teks & Paragraf */
+    /* 6. Label Teks & Paragraf */
     h1, h2, h3, h4, p, label, .stMarkdown, .stRadio label {
         color: #334155 !important;
         font-weight: 600;
     }
 
-    /* 7. KOTAK UPLOAD PATAH-PATAH DIPERKECIL KE SAMPING & DIBUAT RINGKAS */
+    /* 7. KOTAK UPLOAD PATAH-PATAH */
     [data-testid="stFileUploader"] {
-        max-width: 440px !important;
-        margin-bottom: 4px !important;
+        width: 100% !important;
+        max-width: 380px !important;
+        margin-bottom: 6px !important;
     }
     [data-testid="stFileUploader"] section {
         padding: 6px 14px !important;
-        min-height: 55px !important;
+        min-height: 52px !important;
         border: 2px dashed #7dd3fc !important;
         border-radius: 8px !important;
         background-color: #f8fafc !important;
@@ -99,7 +99,14 @@ st.markdown("""
         font-size: 0.85rem !important;
     }
 
-    /* 8. Tombol Prediksi Utama */
+    /* 8. HAPUS / SEMBUNYIKAN TOMBOL '+' KECIL PADA FILE UPLOADER */
+    [data-testid="stFileUploader"] button[aria-label="Upload files"],
+    [data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"] button:not(:first-child),
+    [data-testid="stFileUploaderDeleteBtn"] + button {
+        display: none !important;
+    }
+
+    /* 9. Tombol Prediksi Utama */
     div.stButton > button:first-child {
         background-color: #38bdf8 !important;
         color: #1e293b !important;
@@ -107,9 +114,10 @@ st.markdown("""
         font-weight: 800 !important;
         border-radius: 8px !important;
         border: 1px solid #0ea5e9 !important;
-        padding: 6px 16px !important;
+        padding: 8px 16px !important;
         box-shadow: 0 3px 8px rgba(56, 189, 248, 0.3) !important;
-        margin-top: 6px;
+        margin-top: 8px;
+        max-width: 280px;
     }
     div.stButton > button:first-child:hover {
         background-color: #0ea5e9 !important;
@@ -120,7 +128,7 @@ st.markdown("""
         font-weight: 800 !important;
     }
 
-    /* 9. Radio Buttons */
+    /* 10. Radio Buttons */
     div[data-testid="stRadio"] div[role="radiogroup"] label div:first-child {
         border-color: #475569 !important;
         border-width: 2px !important;
@@ -202,12 +210,13 @@ with st.sidebar:
 
 # --- HALAMAN 1: UNGGAH & PREDIKSI ---
 if menu == "📤 Unggah & Prediksi":
+    # 1. Judul Utama Tetap Ada
     st.markdown('<div class="clean-title">🥦 Klasifikasi Citra Sayuran</div>', unsafe_allow_html=True)
 
     if model is None:
         st.error("Model tidak ditemukan atau gagal diunduh. Pastikan link Google Drive sudah diatur publik.")
     else:
-        # Input metode masukan dibuat horizontal dan ringkas
+        # Pilihan Metode Masukan Gambar
         input_source = st.radio(
             "Pilih Metode Masukan Gambar:",
             options=["📁 Unggah Gambar dari Galeri / Berkas", "📷 Ambil Foto Langsung Lewat Kamera"],
@@ -217,43 +226,46 @@ if menu == "📤 Unggah & Prediksi":
         image_data = None
         source_name = "Kamera"
 
-        if input_source == "📁 Unggah Gambar dari Galeri / Berkas":
-            uploaded_file = st.file_uploader(
-                "Pilih citra sayuran (.jpg, .jpeg, .png)", 
-                type=["jpg", "jpeg", "png"]
-            )
-            if uploaded_file is not None:
-                image_data = uploaded_file
-                source_name = uploaded_file.name
-        else:
-            camera_file = st.camera_input("Arahkan kamera ke sayuran")
-            if camera_file is not None:
-                image_data = camera_file
-                source_name = "Foto_Kamera_Langsung.png"
+        # Bagi 2 Kolom dari Atas agar Hasil Klasifikasi Langsung Sejajar dengan Kotak Upload
+        col_kiri, col_kanan = st.columns([1, 1.6], gap="large")
 
-        if image_data is not None:
-            col1, col2 = st.columns([1, 1.7], gap="medium")
-            
-            # Kolom Kiri: Pratinjau Citra Ramping
-            with col1:
-                img_display = Image.open(image_data).convert("RGB")
-                st.image(img_display, caption="Pratinjau Citra", width=260)
-                run_btn = st.button("🔍 JALANKAN PREDIKSI", use_container_width=True)
-
-            # Preprocessing Citra (150x150)
-            img_resized = img_display.resize((150, 150), Image.Resampling.BILINEAR)
-            img_array = np.array(img_resized, dtype=np.float32)
-
-            has_rescaling = any("rescaling" in layer.name.lower() for layer in model.layers)
-            if has_rescaling:
-                input_tensor = np.expand_dims(img_array, axis=0)
+        with col_kiri:
+            if input_source == "📁 Unggah Gambar dari Galeri / Berkas":
+                uploaded_file = st.file_uploader(
+                    "Pilih citra sayuran (.jpg, .jpeg, .png)", 
+                    type=["jpg", "jpeg", "png"]
+                )
+                if uploaded_file is not None:
+                    image_data = uploaded_file
+                    source_name = uploaded_file.name
             else:
-                input_tensor = np.expand_dims(img_array / 255.0, axis=0)
+                camera_file = st.camera_input("Arahkan kamera ke sayuran")
+                if camera_file is not None:
+                    image_data = camera_file
+                    source_name = "Foto_Kamera_Langsung.png"
 
-            # Kolom Kanan: Hasil Analisis (Posisi Naik Lebih Tinggi)
-            with col2:
+            # Tampilan Pratinjau Citra & Tombol Prediksi
+            if image_data is not None:
+                img_display = Image.open(image_data).convert("RGB")
+                st.image(img_display, caption="Pratinjau Citra", width=280)
+                run_btn = st.button("🔍 JALANKAN PREDIKSI", use_container_width=False)
+
+        # Sisi Kanan: Hasil Klasifikasi (Sejajar dengan Kotak Patah-Patah di Kiri)
+        with col_kanan:
+            if image_data is not None:
+                # Preprocessing Citra (150x150)
+                img_resized = img_display.resize((150, 150), Image.Resampling.BILINEAR)
+                img_array = np.array(img_resized, dtype=np.float32)
+
+                has_rescaling = any("rescaling" in layer.name.lower() for layer in model.layers)
+                if has_rescaling:
+                    input_tensor = np.expand_dims(img_array, axis=0)
+                else:
+                    input_tensor = np.expand_dims(img_array / 255.0, axis=0)
+
+                # Jalankan klasifikasi jika tombol ditekan
                 if run_btn:
-                    with st.spinner("Menganalisis citra..."):
+                    with st.spinner("Menganalisis karakteristik piksel citra..."):
                         preds = model.predict(input_tensor, verbose=0)[0]
 
                         if not np.isclose(np.sum(preds), 1.0, atol=1e-2):
@@ -264,7 +276,8 @@ if menu == "📤 Unggah & Prediksi":
                         confidence = float(preds[predicted_idx] * 100)
                         detail = vegetable_details[label]
 
-                        st.markdown("<h4 style='margin-top: -10px; margin-bottom: 8px;'>📊 Hasil Klasifikasi</h4>", unsafe_allow_html=True)
+                        # Header Hasil Klasifikasi
+                        st.markdown("<h4 style='margin-top: 0px; margin-bottom: 8px;'>📊 Hasil Klasifikasi</h4>", unsafe_allow_html=True)
 
                         # Ambang Batas 60%
                         if confidence < 60.0:
@@ -348,7 +361,7 @@ if menu == "📤 Unggah & Prediksi":
                                     )
                                 )
                             )
-                            .properties(height=145)
+                            .properties(height=140)
                         )
                         st.altair_chart(chart, use_container_width=True)
 
@@ -358,7 +371,7 @@ elif menu == "ℹ️ Tentang Sistem":
     st.markdown("---")
     st.markdown("""
     ### Gambaran Proyek
-    Aplikasi ini dikembangkan untuk mengidentifikasi dan mengklasifikasikan tiga jenis sayuran (**Wortel**, **Mentimun**, dan **Tomat**) secara otomatis dari citra digital[cite: 10].
+    Aplikasi ini dikembangkan untuk mengidentifikasi dan mengklasifikasikan tiga jenis sayuran (**Wortel**, **Mentimun**, dan **Tomat**) secara otomatis dari citra digital.
     
     * **Arsitektur Model:** Custom Deep Convolutional Neural Network (CNN)
     * **Metodologi:** CRISP-DM
