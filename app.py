@@ -13,27 +13,21 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom Styling (Selaras dengan Tombol Upload Biru Muda Cerah)
+# Custom Styling (Charcoal Slate & Biru Muda Cerah)
 st.markdown("""
     <style>
-    /* 1. Header Atas Streamlit */
     header[data-testid="stHeader"] {
         background-color: #ffffff !important;
     }
-    
-    /* 2. Latar Belakang Utama Aplikasi */
     .stApp {
         background-color: #ffffff !important;
         color: #334155 !important;
     }
-    
-    /* 3. Bar Sisi (Sidebar) */
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%) !important;
         color: #334155 !important;
         border-right: 1px solid #cbd5e1;
     }
-    
     [data-testid="stSidebar"] h3, 
     [data-testid="stSidebar"] span, 
     [data-testid="stSidebar"] label, 
@@ -42,12 +36,9 @@ st.markdown("""
         color: #334155 !important;
         font-weight: 600;
     }
-    
     [data-testid="stSidebar"] hr {
         border-color: #cbd5e1 !important;
     }
-
-    /* 4. Judul Utama */
     .clean-title {
         font-size: 2.2rem;
         font-weight: 800;
@@ -58,14 +49,10 @@ st.markdown("""
         align-items: center;
         gap: 12px;
     }
-
-    /* 5. Semua Label Teks & Paragraf */
     h1, h2, h3, h4, p, label, .stMarkdown, .stRadio label {
         color: #334155 !important;
         font-weight: 600;
     }
-
-    /* 6. Area Kotak Upload */
     [data-testid="stFileUploader"] section {
         padding: 24px 20px;
         min-height: 150px;
@@ -78,38 +65,26 @@ st.markdown("""
         border-color: #38bdf8 !important;
         background-color: #f0f9ff !important;
     }
-    
-    /* Tombol Upload (Biru Muda Langit Cerah) */
     [data-testid="stFileUploader"] section button {
         background-color: #38bdf8 !important;
         border-radius: 8px !important;
         border: 1px solid #0ea5e9 !important;
         box-shadow: 0 2px 8px rgba(56, 189, 248, 0.35) !important;
     }
-    [data-testid="stFileUploader"] section button:hover {
-        background-color: #0ea5e9 !important;
-    }
-    
-    /* Teks & Ikon Tombol Upload */
     [data-testid="stFileUploader"] section button * {
         color: #1e293b !important;
         font-weight: 700 !important;
     }
-    
-    /* Keterangan Ukuran File */
     [data-testid="stFileUploader"] span, 
     [data-testid="stFileUploader"] small {
         color: #64748b !important;
         font-weight: 500 !important;
     }
-
-    /* 7. Tombol Prediksi Utama (Biru Muda Langit Cerah) */
     div.stButton > button:first-child {
         background-color: #38bdf8 !important;
         color: #1e293b !important;
         font-size: 1rem !important;
         font-weight: 800 !important;
-        letter-spacing: 0.5px !important;
         border-radius: 10px !important;
         border: 1px solid #0ea5e9 !important;
         padding: 12px 24px !important;
@@ -119,45 +94,23 @@ st.markdown("""
     div.stButton > button:first-child:hover {
         background-color: #0ea5e9 !important;
         color: #ffffff !important;
-        box-shadow: 0 6px 16px rgba(14, 165, 233, 0.45) !important;
         transform: translateY(-2px);
     }
     div.stButton > button:first-child * {
         color: #1e293b !important;
         font-weight: 800 !important;
     }
-    div.stButton > button:first-child:hover * {
-        color: #ffffff !important;
-    }
-
-    /* 8. Lencana Footer Sidebar */
-    .sidebar-footer-badge {
-        display: inline-block;
-        background-color: #ffffff;
-        color: #334155 !important;
-        padding: 6px 18px;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        font-weight: 700;
-        border: 1px solid #cbd5e1;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    }
-
-    /* 9. Lingkaran Radio Button */
     div[data-testid="stRadio"] div[role="radiogroup"] label div:first-child {
         border-color: #475569 !important;
         border-width: 2px !important;
     }
-
     div[data-testid="stRadio"] div[role="radiogroup"] label[data-checked="true"] div:first-child {
         border-color: #334155 !important;
     }
-
     div[data-testid="stRadio"] div[role="radiogroup"] label div:first-child > div,
     div[data-testid="stRadio"] div[role="radiogroup"] label div:first-child::after {
         background-color: #334155 !important;
     }
-
     div[data-testid="stRadio"] input[type="radio"] {
         accent-color: #334155 !important;
     }
@@ -180,27 +133,26 @@ def load_classification_model():
     return tf.keras.models.load_model(model_name)
 
 model = load_classification_model()
+
+# URUTAN KELAS STANDAR (Sesuai Confusion Matrix di notebook evaluasi: Carrot=0, Cucumber=1, Tomato=2)
 class_names = ['Carrot', 'Cucumber', 'Tomato']
 
-# Informasi Detail Sayuran (Bahasa Indonesia)
+# Informasi Detail Sayuran
 vegetable_details = {
     'Carrot': {
         'nama': 'Wortel',
-        'ciri_fisik': 'Bentuk silindris memanjang dengan warna oranye cerah, tekstur renyah padat.',
         'nutrisi': 'Kaya Vitamin A (Beta-karoten), Vitamin K1, Kalium, dan Serat.',
         'manfaat': 'Menjaga kesehatan penglihatan mata, meningkatkan imunitas, dan menjaga metabolisme tubuh.',
         'penyimpanan': 'Potong daun hijau, simpan di laci kulkas dengan wadah tertutup agar tahan hingga 3-4 minggu.'
     },
     'Cucumber': {
         'nama': 'Mentimun',
-        'ciri_fisik': 'Bentuk memanjang silindris berwarna hijau, berdaging renyah dengan kadar air tinggi.',
         'nutrisi': 'Mengandung kadar air hingga 95%, Vitamin K, Vitamin C, dan Mineral Magnesium.',
         'manfaat': 'Mencegah dehidrasi, membantu melancarkan pencernaan, dan meredakan peradangan.',
         'penyimpanan': 'Bungkus rapat dengan tisu atau kertas kering, simpan pada bagian kulkas yang tidak terlalu dingin.'
     },
     'Tomato': {
         'nama': 'Tomat',
-        'ciri_fisik': 'Bentuk bulat mengilap, berwarna merah cerah saat matang, berair dengan rasa segar.',
         'nutrisi': 'Kaya Antioksidan Likopen, Vitamin C, Kalium, dan Folat.',
         'manfaat': 'Membantu menjaga kesehatan jantung, menangkal radikal bebas, dan merawat kulit.',
         'penyimpanan': 'Simpan pada suhu ruangan dengan posisi tangkai menghadap ke bawah agar tetap segar dan tidak lembek.'
@@ -223,7 +175,7 @@ with st.sidebar:
         """
         <div style="min-height: 280px;"></div>
         <div style="text-align: center; border-top: 1px solid #cbd5e1; padding-top: 16px;">
-            <span class="sidebar-footer-badge">Oleh : Kelompok 6</span>
+            <span style="display: inline-block; background-color: #ffffff; color: #334155; padding: 6px 18px; border-radius: 20px; font-size: 0.9rem; font-weight: 700; border: 1px solid #cbd5e1;">Oleh : Kelompok 6</span>
         </div>
         """, 
         unsafe_allow_html=True
@@ -237,7 +189,6 @@ if menu == "📤 Unggah & Prediksi":
     if model is None:
         st.error("Model tidak ditemukan atau gagal diunduh. Pastikan link Google Drive sudah diatur publik.")
     else:
-        # Pilihan Metode Masukan Citra (Unggah Berkas atau Kamera)
         input_source = st.radio(
             "Pilih Metode Masukan Gambar:",
             options=["📁 Unggah Gambar dari Galeri / Berkas", "📷 Ambil Foto Langsung Lewat Kamera"],
@@ -265,34 +216,39 @@ if menu == "📤 Unggah & Prediksi":
             st.write("")
             col1, col2 = st.columns([1, 1], gap="large")
             
-            # Kolom Kiri: Pratinjau Citra Masukan
             with col1:
                 img_display = Image.open(image_data).convert("RGB")
                 st.image(img_display, caption="Pratinjau Citra Sayuran", use_container_width=True)
                 run_btn = st.button("🔍 JALANKAN PREDIKSI", use_container_width=True)
 
-            # Preprocessing Citra (150x150, normalisasi [0, 1])
-            img_resized = img_display.resize((150, 150))
-            img_array = np.array(img_resized) / 255.0
-            img_array = np.expand_dims(img_array, axis=0)
+            # Preprocessing Citra Sesuai Training (150x150)
+            img_resized = img_display.resize((150, 150), Image.Resampling.BILINEAR)
+            img_array = np.array(img_resized, dtype=np.float32)
 
-            # Kolom Kanan: Hasil Analisis
+            # Normalisasi piksel ke rentang [0, 1]
+            # (Jika di arsitektur model sudah ada tf.keras.layers.Rescaling(1./255), lewati pembagian ini)
+            img_normalized = img_array / 255.0
+            input_tensor = np.expand_dims(img_normalized, axis=0)
+
             with col2:
                 if run_btn:
-                    with st.spinner("Menganalisis karakteristik piksel citra..."):
-                        preds = model.predict(img_array, verbose=0)[0]
-                        predicted_idx = np.argmax(preds)
+                    with st.spinner("Menganalisis karakteristik citra..."):
+                        preds = model.predict(input_tensor, verbose=0)[0]
+
+                        # Cek apakah model menghasilkan Softmax atau Logits mentah
+                        if not np.isclose(np.sum(preds), 1.0, atol=1e-2):
+                            preds = tf.nn.softmax(preds).numpy()
+
+                        predicted_idx = int(np.argmax(preds))
                         label = class_names[predicted_idx]
-                        confidence = preds[predicted_idx] * 100
+                        confidence = float(preds[predicted_idx] * 100)
                         detail = vegetable_details[label]
 
                         st.subheader("📊 Hasil Klasifikasi")
 
-                        # LOGIKA THRESHOLD KEYAKINAN (Batas Minimal 60%)
                         if confidence < 60.0:
-                            st.warning(f"⚠️ **Tingkat Keyakinan Rendah ({confidence:.2f}%)**\n\nCitra tidak dapat dikenali secara pasti sebagai Wortel, Mentimun, atau Tomat. Pastikan sayuran berada di tengah, tidak terpotong, dan pencahayaan cukup jelas.")
+                            st.warning(f"⚠️ **Tingkat Keyakinan Rendah ({confidence:.2f}%)**\n\nCitra tidak dapat dikenali secara pasti. Pastikan sayuran berada di tengah dan pencahayaan jelas.")
                         else:
-                            # Kartu Hasil Terverifikasi
                             st.markdown(f"""
                                 <div style="
                                     background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
@@ -300,16 +256,14 @@ if menu == "📤 Unggah & Prediksi":
                                     border-radius: 12px;
                                     padding: 18px 22px;
                                     margin-bottom: 12px;
-                                    box-shadow: 0 2px 6px rgba(14, 165, 233, 0.1);
                                 ">
-                                    <span style="font-size: 0.85rem; font-weight: 700; color: #0369a1; text-transform: uppercase; letter-spacing: 0.8px;">Jenis Sayuran Terdeteksi</span>
+                                    <span style="font-size: 0.85rem; font-weight: 700; color: #0369a1; text-transform: uppercase;">Jenis Sayuran Terdeteksi</span>
                                     <div style="font-size: 1.6rem; font-weight: 800; color: #1e293b; margin-top: 4px;">
                                         {detail['nama']}
                                     </div>
                                 </div>
                             """, unsafe_allow_html=True)
 
-                            # Kartu Tingkat Keyakinan
                             st.markdown(f"""
                                 <div style="
                                     background: #f8fafc;
@@ -330,12 +284,10 @@ if menu == "📤 Unggah & Prediksi":
                                         padding: 4px 16px;
                                         border-radius: 20px;
                                         border: 1px solid #0ea5e9;
-                                        box-shadow: 0 2px 6px rgba(56, 189, 248, 0.25);
                                     ">{confidence:.2f}%</span>
                                 </div>
                             """, unsafe_allow_html=True)
 
-                            # Kartu Informasi Gizi & Manfaat
                             detail_col1, detail_col2 = st.columns(2)
                             with detail_col1:
                                 st.markdown(f"""
@@ -360,26 +312,24 @@ if menu == "📤 Unggah & Prediksi":
                                 </div>
                             """, unsafe_allow_html=True)
 
-                        # Grafik Probabilitas (Tetap ditampilkan agar distribusi skor terlihat jelas)
                         st.write("")
                         st.subheader("Distribusi Skor Keyakinan")
                         df_chart = pd.DataFrame({
-                            'Sayuran': ['Wortel', 'Mentimun', 'Tomat'],
+                            'Sayuran': [vegetable_details[c]['nama'] for c in class_names],
                             'Probabilitas (%)': [round(p * 100, 2) for p in preds]
                         }).set_index('Sayuran')
                         st.bar_chart(df_chart)
 
-                        # Detail Teknis Gambar
-                        with st.expander(f"🔍 Detail Citra ({source_name})"):
-                            st.write(f"- **Sumber Citra:** `{source_name}`")
-                            st.write(f"- **Dimensi Citra Asli:** `{img_display.size[0]} × {img_display.size[1]} piksel`")
-                            st.write(f"- **Resolusi Masukan Model:** `150 × 150 piksel (RGB)`")
+                        # Panel Diagnostik Nilai Mentah untuk Memeriksa Model
+                        with st.expander("🛠️ Panel Debug Nilai Prediksi"):
+                            st.write("**Probabilitas per Indeks:**")
+                            for idx, c in enumerate(class_names):
+                                st.write(f"- Indeks `{idx}` ({c} / {vegetable_details[c]['nama']}): **{preds[idx]*100:.2f}%**")
 
 # --- HALAMAN 2: TENTANG SISTEM ---
 elif menu == "ℹ️ Tentang Sistem":
     st.markdown('<div class="clean-title">ℹ️ Tentang Sistem</div>', unsafe_allow_html=True)
     st.markdown("---")
-
     st.markdown("""
     ### Gambaran Proyek
     Aplikasi ini dikembangkan untuk mengidentifikasi dan mengklasifikasikan tiga jenis sayuran (**Wortel**, **Mentimun**, dan **Tomat**) secara otomatis dari citra digital.
