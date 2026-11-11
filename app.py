@@ -14,13 +14,13 @@ st.set_page_config(
     layout="wide"
 )
 
-# Custom Styling (Charcoal Slate, Biru Muda Cerah & Penataan Sejajar)
+# Custom Styling
 st.markdown("""
     <style>
-    /* 1. Pengaturan Container Halaman */
+    /* 1. Berikan ruang yang cukup di atas agar judul tidak terpotong header */
     .block-container {
-        padding-top: 2rem !important;
-        padding-bottom: 1rem !important;
+        padding-top: 4.5rem !important;
+        padding-bottom: 3rem !important;
         padding-left: 2.5rem !important;
         padding-right: 2.5rem !important;
     }
@@ -55,13 +55,13 @@ st.markdown("""
         margin: 10px 0 !important;
     }
 
-    /* 5. Judul Utama (Tetap Ada dan Jelas) */
+    /* 5. Judul Utama (Aman & Tidak Terpotong) */
     .clean-title {
-        font-size: 1.85rem;
+        font-size: 2rem;
         font-weight: 800;
         color: #1e293b !important;
-        margin-top: -10px;
-        margin-bottom: 14px;
+        margin-top: 0px;
+        margin-bottom: 18px;
         display: flex;
         align-items: center;
         gap: 10px;
@@ -73,7 +73,7 @@ st.markdown("""
         font-weight: 600;
     }
 
-    /* 7. KOTAK UPLOAD PATAH-PATAH */
+    /* 7. Kotak Upload File Dibuat Ramping */
     [data-testid="stFileUploader"] {
         width: 100% !important;
         max-width: 380px !important;
@@ -99,7 +99,7 @@ st.markdown("""
         font-size: 0.85rem !important;
     }
 
-    /* 8. HAPUS / SEMBUNYIKAN TOMBOL '+' KECIL PADA FILE UPLOADER */
+    /* 8. Sembunyikan Tombol '+' Kecil Tambahan */
     [data-testid="stFileUploader"] button[aria-label="Upload files"],
     [data-testid="stFileUploader"] [data-testid="stFileUploaderDropzone"] button:not(:first-child),
     [data-testid="stFileUploaderDeleteBtn"] + button {
@@ -210,13 +210,11 @@ with st.sidebar:
 
 # --- HALAMAN 1: UNGGAH & PREDIKSI ---
 if menu == "📤 Unggah & Prediksi":
-    # 1. Judul Utama Tetap Ada
     st.markdown('<div class="clean-title">🥦 Klasifikasi Citra Sayuran</div>', unsafe_allow_html=True)
 
     if model is None:
         st.error("Model tidak ditemukan atau gagal diunduh. Pastikan link Google Drive sudah diatur publik.")
     else:
-        # Pilihan Metode Masukan Gambar
         input_source = st.radio(
             "Pilih Metode Masukan Gambar:",
             options=["📁 Unggah Gambar dari Galeri / Berkas", "📷 Ambil Foto Langsung Lewat Kamera"],
@@ -226,7 +224,7 @@ if menu == "📤 Unggah & Prediksi":
         image_data = None
         source_name = "Kamera"
 
-        # Bagi 2 Kolom dari Atas agar Hasil Klasifikasi Langsung Sejajar dengan Kotak Upload
+        # Bagi 2 Kolom dari Atas agar Hasil Sejajar dengan Kotak Masukan
         col_kiri, col_kanan = st.columns([1, 1.6], gap="large")
 
         with col_kiri:
@@ -244,16 +242,13 @@ if menu == "📤 Unggah & Prediksi":
                     image_data = camera_file
                     source_name = "Foto_Kamera_Langsung.png"
 
-            # Tampilan Pratinjau Citra & Tombol Prediksi
             if image_data is not None:
                 img_display = Image.open(image_data).convert("RGB")
                 st.image(img_display, caption="Pratinjau Citra", width=280)
                 run_btn = st.button("🔍 JALANKAN PREDIKSI", use_container_width=False)
 
-        # Sisi Kanan: Hasil Klasifikasi (Sejajar dengan Kotak Patah-Patah di Kiri)
         with col_kanan:
             if image_data is not None:
-                # Preprocessing Citra (150x150)
                 img_resized = img_display.resize((150, 150), Image.Resampling.BILINEAR)
                 img_array = np.array(img_resized, dtype=np.float32)
 
@@ -263,9 +258,8 @@ if menu == "📤 Unggah & Prediksi":
                 else:
                     input_tensor = np.expand_dims(img_array / 255.0, axis=0)
 
-                # Jalankan klasifikasi jika tombol ditekan
                 if run_btn:
-                    with st.spinner("Menganalisis karakteristik piksel citra..."):
+                    with st.spinner("Menganalisis karakteristik citra..."):
                         preds = model.predict(input_tensor, verbose=0)[0]
 
                         if not np.isclose(np.sum(preds), 1.0, atol=1e-2):
@@ -276,14 +270,11 @@ if menu == "📤 Unggah & Prediksi":
                         confidence = float(preds[predicted_idx] * 100)
                         detail = vegetable_details[label]
 
-                        # Header Hasil Klasifikasi
                         st.markdown("<h4 style='margin-top: 0px; margin-bottom: 8px;'>📊 Hasil Klasifikasi</h4>", unsafe_allow_html=True)
 
-                        # Ambang Batas 60%
                         if confidence < 60.0:
                             st.warning(f"⚠️ **Tingkat Keyakinan Rendah ({confidence:.2f}%)**\n\nCitra tidak dapat dikenali secara pasti. Pastikan sayuran berada di tengah dan pencahayaan jelas.")
                         else:
-                            # Kartu Hasil Ramping Sejajar
                             st.markdown(f"""
                                 <div style="
                                     background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
@@ -311,7 +302,6 @@ if menu == "📤 Unggah & Prediksi":
                                 </div>
                             """, unsafe_allow_html=True)
 
-                            # Kartu Nutrisi & Manfaat
                             detail_col1, detail_col2 = st.columns(2)
                             with detail_col1:
                                 st.markdown(f"""
@@ -335,7 +325,7 @@ if menu == "📤 Unggah & Prediksi":
                                 </div>
                             """, unsafe_allow_html=True)
 
-                        # Grafik Probabilitas dengan Skala Lengkap (0, 20, 40, 60, 80, 100)
+                        # Grafik Probabilitas dengan Skala Rinci (0, 10, 20, ..., 100)
                         st.markdown("<p style='margin-bottom: 2px; margin-top: 8px; font-size: 0.85rem;'><b>Distribusi Skor Keyakinan</b></p>", unsafe_allow_html=True)
                         
                         df_chart = pd.DataFrame({
@@ -352,7 +342,7 @@ if menu == "📤 Unggah & Prediksi":
                                     'Probabilitas (%):Q',
                                     scale=alt.Scale(domain=[0, 100]),
                                     axis=alt.Axis(
-                                        values=[0, 20, 40, 60, 80, 100],
+                                        values=[0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
                                         title='Probabilitas (%)',
                                         titleColor='#334155',
                                         labelColor='#475569',
@@ -361,13 +351,13 @@ if menu == "📤 Unggah & Prediksi":
                                     )
                                 )
                             )
-                            .properties(height=140)
+                            .properties(height=180)
                         )
                         st.altair_chart(chart, use_container_width=True)
 
 # --- HALAMAN 2: TENTANG SISTEM ---
 elif menu == "ℹ️ Tentang Sistem":
-    st.markdown('<div class="clean-title">ℹ️ Tentang Sistem</div>', unsafe_allow_html=True)
+    st.markdown('<div class="clean-title">🥦 Tentang Sistem</div>', unsafe_allow_html=True)
     st.markdown("---")
     st.markdown("""
     ### Gambaran Proyek
